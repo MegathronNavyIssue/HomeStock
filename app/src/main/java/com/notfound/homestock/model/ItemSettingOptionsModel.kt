@@ -103,7 +103,7 @@ class ItemSettingOptionsModel(
                 AppContext.application.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/")
+                        Uri.parse("https://github.com/MegathronNavyIssue/HomeStock")
                     ).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
