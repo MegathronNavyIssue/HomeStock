@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.notfound.homestock.fragment.MainFragment"
+        android:label="首页"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_ShoppingCartFragment"
+            app:destination="@id/ShoppingCartFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.notfound.homestock.fragment.SettingFragment"
+        android:label="设置"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/ShoppingCartFragment"
+        android:name="com.notfound.homestock.fragment.ShoppingCartFragment"
+        android:label="购物车"
+        tools:layout="@layout/fragment_shopping_cart" />
+</navigation>

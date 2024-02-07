@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#20232a"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:padding="10dp"
+                android:src="@drawable/arrow_back_eed8c0_24px"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/text_shopping_cart_title"
+                android:textColor="#eed8c0"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_done"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:padding="5dp"
+                android:src="@drawable/done_eed8c0_w200_24px"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            tools:listitem="@layout/item_shopping_cart_object"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_title" />
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/shape_shopping_cart_add_bg"
+            android:contentDescription="@null"
+            android:elevation="5dp"
+            android:padding="4dp"
+            android:src="@drawable/add_w440_black_24px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

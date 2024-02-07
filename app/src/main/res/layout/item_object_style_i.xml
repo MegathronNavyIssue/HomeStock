@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.notfound.homestock.view.PointConstraintLayout
+        android:id="@+id/cl_object_root"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp">
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@null"
+                    android:padding="7dp"
+                    android:src="@mipmap/img_stickers_box_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textSize="16sp"
+                    tools:text="标题"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_time"
+                    app:layout_constraintStart_toEndOf="@+id/iv_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+
+                <TextView
+                    android:id="@+id/tv_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="单位:1"
+                    app:layout_constraintStart_toStartOf="@+id/tv_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+                <TextView
+                    android:id="@+id/tv_edit_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_expiration_time"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_expiration_time"
+                    tools:text="编辑日期:2022.01.01" />
+
+                <TextView
+                    android:id="@+id/tv_expiration_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="过期时间:2023.01.01" />
+
+                <TextView
+                    android:id="@+id/tv_alert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_expiration_bg_red"
+                    android:paddingEnd="6dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:text="已过期"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_edit_time"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </com.notfound.homestock.view.PointConstraintLayout>
+</layout>

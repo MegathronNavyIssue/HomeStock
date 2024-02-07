@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#272A49"
+        >
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_bg_head"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="15dp"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="10dp"
+            android:src="@drawable/drawable_settings_white_24px"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_foot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_bg_foot"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <View
+            android:background="@drawable/gradient_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_foot"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_object_style_i"
+            app:layoutManager="com.drake.brv.layoutmanager.HoverLinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_setting" />
+
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="25dp"
+            android:background="@drawable/shape_home_add_bg"
+            android:contentDescription="@null"
+            android:elevation="5dp"
+            android:padding="4dp"
+            android:src="@drawable/add_w440_white_24px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_shopping_cart"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_home_add_bg"
+            android:contentDescription="@null"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:src="@drawable/shopping_cart_w440_white_24px"
+            app:layout_constraintBottom_toTopOf="@+id/iv_add"
+            app:layout_constraintEnd_toEndOf="@+id/iv_add" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
