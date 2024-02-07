@@ -17,6 +17,16 @@ This is an exercise program with numerous bugs and lack of adaptations.
 练习项目，BUG繁多，缺少适配
 
 
+No more updates are planned at this time
+
+暂时没有更多更新计划
+
+
+# Screenshot
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_01.jpg" width = "540" height = "1105" alt="" align=center />
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_02.jpg" width = "540" height = "1105" alt="" align=center />
+
+
 
 # Resource
 
