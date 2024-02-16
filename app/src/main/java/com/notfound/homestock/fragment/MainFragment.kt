@@ -14,7 +14,6 @@ import com.lxj.xpopup.impl.ConfirmPopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.notfound.homestock.R
 import com.notfound.homestock.base.BaseFragment
-import com.notfound.homestock.bean.ItemInfoBean
 import com.notfound.homestock.bean.ShoppingCartBean
 import com.notfound.homestock.databinding.FragmentMainBinding
 import com.notfound.homestock.dialog.ObjectAddDialog
@@ -86,7 +85,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                                                             data.name
                                                         ), {
                                                             DataUtils.removeItemRefresh(
-                                                                data.itemGroupPosition,
+                                                                data.id,
                                                                 activity as AppCompatActivity
                                                             )
                                                         }, {
@@ -162,7 +161,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                         // 排序
                         val data = DataUtils.sortItemInfoBean(t)
                         val viewList = mutableListOf<Any>()
-                        viewList.addAll(dataToView(data))
+                        viewList.addAll(ItemObjectModel.buildModel(data))
                         // 如果没有数据，则展示样例
                         if (viewList.isEmpty()) {
                             viewList.add(ItemExampleObjectModel(expirationTime = System.currentTimeMillis() - 3600 * 1000 * 24))
@@ -217,22 +216,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun initData() {
         rvViewModel?.itemInfoData?.postValue(DataUtils.loadItemInfo())
-    }
-
-    private fun dataToView(data: List<ItemInfoBean>): MutableList<ItemObjectModel> {
-        val list = mutableListOf<ItemObjectModel>()
-        for (obj in data) {
-            list.add(
-                ItemObjectModel(
-                    name = obj.name,
-                    num = obj.num,
-                    editTime = obj.editTime,
-                    expirationTime = obj.expirationTime,
-                    itemInfoBean = obj,
-                )
-            )
-        }
-        return list
     }
 
 }

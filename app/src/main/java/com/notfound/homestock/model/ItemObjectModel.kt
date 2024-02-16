@@ -16,12 +16,33 @@ import java.util.concurrent.TimeUnit
 open class ItemObjectModel(
     override var itemGroupPosition: Int = 0,
     override var itemExpand: Boolean = false,
+    val id: Long,
     val name: String,
     val num: Int,
     val editTime: Long,
     val expirationTime: Long,
     val itemInfoBean: ItemInfoBean,
 ) : ItemExpand, ItemBind {
+
+    companion object {
+        fun buildModel(data: List<ItemInfoBean>): MutableList<ItemObjectModel> {
+            val list = mutableListOf<ItemObjectModel>()
+            for (obj in data) {
+                list.add(
+                    ItemObjectModel(
+                        id = obj.id,
+                        name = obj.name,
+                        num = obj.num,
+                        editTime = obj.editTime,
+                        expirationTime = obj.expirationTime,
+                        itemInfoBean = obj,
+                    )
+                )
+            }
+            return list
+        }
+    }
+
     override fun getItemSublist(): List<Any>? {
         return null
     }

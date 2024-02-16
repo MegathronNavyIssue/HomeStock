@@ -52,14 +52,12 @@ object DataUtils {
     }
 
     // 删除数据并且刷新UI
-    fun removeItemRefresh(p: Int, activity: AppCompatActivity) {
-        loadItemInfo().takeIf { it.size > p }?.apply {
-            removeAt(p)
-        }?.let {
-            saveItemInfoRefresh(
-                it,
-                activity
-            )
+    fun removeItemRefresh(id: Long, activity: AppCompatActivity) {
+        val list = loadItemInfo()
+
+        list.find { it.id == id }?.let {
+            list.remove(it)
+            saveItemInfoRefresh(list,activity)
         }
     }
 
