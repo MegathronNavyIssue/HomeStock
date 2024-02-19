@@ -48,6 +48,14 @@ object SharedPreferencesUtils {
         return instances.getString(key, null)
     }
 
+    fun getInt(key: String): Int? {
+        if (!initCheck()) {
+            return null
+        }
+        return instances.getInt(key, -1)
+    }
+
+
     fun getBoolean(key: String): Boolean? {
         if (!initCheck()) {
             return null

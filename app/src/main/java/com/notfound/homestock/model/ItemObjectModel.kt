@@ -8,6 +8,7 @@ import com.drake.brv.item.ItemExpand
 import com.notfound.homestock.R
 import com.notfound.homestock.bean.ItemInfoBean
 import com.notfound.homestock.databinding.ItemObjectStyleIiBinding
+import com.notfound.homestock.utils.DataUtils
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -67,7 +68,7 @@ open class ItemObjectModel(
                 val diff = TimeUnit.MILLISECONDS.toDays(expirationTime - currentTime)
                 if (diff < 0) {
                     it.vStatus.setBackgroundResource(R.color.status_already)
-                } else if (diff < 30) {
+                } else if (diff < DataUtils.getNoticeTime()) {
                     it.vStatus.setBackgroundResource(R.color.status_soon)
                 } else {
                     it.vStatus.setBackgroundResource(R.color.status_not_yet)

@@ -29,16 +29,16 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
     override fun initView() {
         binding.rv.linear().setup {
             addType<ItemSettingOptionsModel>(R.layout.item_setting_options)
-            R.id.cl_container.onClick {
+            R.id.cl_root.onClick {
                 when (val data = _data) {
                     is ItemSettingOptionsModel -> {
-                        data.onClick()
+                        data.onClick{
+                            // 修改设置后刷新UI,可以用liveData,但是又好像没有必要
+                            initData()
+                        }
                     }
                 }
             }
-        }
-        activity?.let {
-            binding.rv.bindingAdapter.models = ItemSettingOptionsModel.getSettings(it)
         }
         binding.ivBack.setOnClickListener {
             findNavController().popBackStack()
@@ -46,6 +46,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
     }
 
     override fun initData() {
+        activity?.let {
+            binding.rv.bindingAdapter.models = ItemSettingOptionsModel.getSettings(it)
+        }
     }
 
 }

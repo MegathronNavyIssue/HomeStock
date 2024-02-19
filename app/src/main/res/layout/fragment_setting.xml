@@ -43,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:background="@drawable/shape_dialog_add_bg_white"
             tools:listitem="@layout/item_setting_options"
             app:layout_constraintTop_toBottomOf="@+id/cl_title" />
 

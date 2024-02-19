@@ -26,6 +26,12 @@
     <string name="text_error">数据异常</string>
     <string name="text_settings_title">设置</string>
     <string name="text_version">版本号</string>
+    <string name="text_settings_notice_time">临期提醒天数</string>
+    <string name="text_settings_notice_time_unit">%d天</string>
+    <string name="text_settings_notice_time_error_number">请输入正确的天数</string>
+    <string name="text_settings_notice_time_subtitle">定义到期前多少天属于临近过期</string>
+    <string name="text_settings_notice_time_hint">请输入1到365之间的数字</string>
+    <string name="text_settings_success">设置成功</string>
     <string name="text_settings_clear">清空数据</string>
     <string name="text_settings_resource">引用资源</string>
     <string name="text_settings_clear_success">清空完成</string>

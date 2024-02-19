@@ -10,10 +10,20 @@ import com.notfound.homestock.bean.ShoppingCartBean
 import com.notfound.homestock.viewmodel.RvViewModel
 
 object DataUtils {
+    // 首页数据
     private const val ITEM_INFO_DATA = "item_info_list"
+
+    // 备货清单数据
     private const val SHOPPING_CART_DATA = "shopping_cart_data"
+
+    // 首页引导页面展示标志
     const val GUIDE_HOME = "guide_home"
+
+    // 备货清单页面引导页面展示标志
     const val GUIDE_SHOPPING_CART = "guide_shopping_cart"
+
+    // 过期前多少天进入临期提醒阶段
+    private  const val NOTICE_TIME = "notice_time"
 
     // 保存数据并且通知liveData刷新
     private fun saveItemInfoRefresh(
@@ -57,7 +67,7 @@ object DataUtils {
 
         list.find { it.id == id }?.let {
             list.remove(it)
-            saveItemInfoRefresh(list,activity)
+            saveItemInfoRefresh(list, activity)
         }
     }
 
@@ -133,9 +143,25 @@ object DataUtils {
     }
 
     // 删除数据
-    fun clear(activity: AppCompatActivity){
-        saveItemInfoRefresh(mutableListOf(),activity)
-        saveShoppingCartInfoRefresh(mutableListOf(),activity)
+    fun clear(activity: AppCompatActivity) {
+        saveItemInfoRefresh(mutableListOf(), activity)
+        saveShoppingCartInfoRefresh(mutableListOf(), activity)
     }
+
+    // 获取过期前临期阶段天数
+    fun getNoticeTime(): Int {
+        SharedPreferencesUtils.getInt(NOTICE_TIME)?.takeIf { it >= 0 }?.let {
+            return it
+        }
+        return 30
+    }
+
+    // 设置过期前临期阶段天数
+    fun setNoticeTime(day: Int) {
+        if (day >= 1) {
+            SharedPreferencesUtils.save(NOTICE_TIME, day)
+        }
+    }
+
 
 }
