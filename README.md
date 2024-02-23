@@ -23,8 +23,12 @@ No more updates are planned at this time
 
 
 # Screenshot
-<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_01.jpg" width = "540" height = "1105" alt="" align=center />
-<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_02.jpg" width = "540" height = "1105" alt="" align=center />
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_01.jpg"/>
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_02.jpg"/>
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_03.jpg"/>
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_04.jpg"/>
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_05.jpg"/>
+<img src="https://github.com/MegathronNavyIssue/HomeStock/blob/main/demo/Screenshot_06.jpg"/>
 
 
 
