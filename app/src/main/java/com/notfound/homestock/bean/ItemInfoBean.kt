@@ -11,6 +11,6 @@ data class ItemInfoBean(
     val editTime: Long = 0,
     // 过期时间
     val expirationTime: Long = 0,
-    // 分组(未使用)
-    val group: String = "",
+    // 分组
+    var groupId: Long = 0,
 )

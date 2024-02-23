@@ -7,43 +7,28 @@ import com.drake.brv.item.ItemBind
 import com.drake.brv.item.ItemExpand
 import com.notfound.homestock.R
 import com.notfound.homestock.bean.ItemInfoBean
-import com.notfound.homestock.databinding.ItemObjectStyleIiBinding
-import com.notfound.homestock.utils.DataUtils
+import com.notfound.homestock.databinding.ItemObjectStyleIiiBinding
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
 
-open class ItemObjectModel(
+class ItemGroupObjectModel(
     override var itemGroupPosition: Int = 0,
     override var itemExpand: Boolean = false,
-    val itemInfoBean: ItemInfoBean,
-) : ItemExpand, ItemBind {
+    itemInfoBean: ItemInfoBean,
+) : ItemExpand, ItemBind, ItemObjectModel(itemGroupPosition, itemExpand, itemInfoBean) {
 
     companion object {
-        fun buildModel(data: List<ItemInfoBean>): MutableList<ItemObjectModel> {
-            val list = mutableListOf<ItemObjectModel>()
+        fun buildModel(data: List<ItemInfoBean>): MutableList<ItemGroupObjectModel> {
+            val list = mutableListOf<ItemGroupObjectModel>()
             for (obj in data) {
                 list.add(
-                    ItemObjectModel(
+                    ItemGroupObjectModel(
                         itemInfoBean = obj,
                     )
                 )
             }
             return list
-        }
-
-        fun getExpirationStatus(obj: ItemInfoBean): ExpirationStatus {
-            val diff = TimeUnit.MILLISECONDS.toDays(obj.expirationTime - System.currentTimeMillis())
-            return if (obj.expirationTime == 0L) {
-                ExpirationStatus.DEFAULT
-            } else if (diff < 0) {
-                ExpirationStatus.EXPIRED
-            } else if (diff < DataUtils.getNoticeTime()) {
-                ExpirationStatus.EXPIRES_SOON
-            } else {
-                ExpirationStatus.DEFAULT
-            }
         }
     }
 
@@ -52,20 +37,21 @@ open class ItemObjectModel(
     }
 
     override fun onBind(vh: BindingAdapter.BindingViewHolder) {
-        DataBindingUtil.bind<ItemObjectStyleIiBinding>(vh.itemView)?.let {
-            it.tvName.text = this.itemInfoBean.name
-            it.tvNum.text = this.itemInfoBean.num.toString()
+        DataBindingUtil.bind<ItemObjectStyleIiiBinding>(vh.itemView)?.let {
+            it.tvName.text = itemInfoBean.name
+            it.tvNum.text = itemInfoBean.num.toString()
+            val currentTime = System.currentTimeMillis()
             val formatter =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault())
             it.tvEditTime.text = String.format(
                 vh.context.resources.getString(R.string.text_item_info_bean_edit_time),
-                formatter.format(Instant.ofEpochMilli(this.itemInfoBean.editTime))
+                formatter.format(Instant.ofEpochMilli(itemInfoBean.editTime))
             )
             it.tvExpirationTime.text = String.format(
                 vh.context.resources.getString(R.string.text_item_info_bean_expiration_time),
-                formatter.format(Instant.ofEpochMilli(this.itemInfoBean.expirationTime))
+                formatter.format(Instant.ofEpochMilli(itemInfoBean.expirationTime))
             )
-            if (this.itemInfoBean.expirationTime != 0L) {
+            if (itemInfoBean.expirationTime != 0L) {
                 it.tvExpirationTime.isVisible = true
                 when (getExpirationStatus(this.itemInfoBean)) {
                     ExpirationStatus.DEFAULT -> {
@@ -83,6 +69,16 @@ open class ItemObjectModel(
             } else {
                 it.tvExpirationTime.isVisible = false
                 it.vStatus.setBackgroundResource(R.color.status_not_yet)
+            }
+            val data = vh.adapter.models
+            var temp: List<Any?>? = null
+            data?.forEach { obj ->
+                if (obj is ItemMainGroupModel && obj.bean.id == this.itemInfoBean.groupId) {
+                    temp = obj.getItemSublist()
+                }
+            }
+            temp?.let { t ->
+                it.vFoot.isVisible = t.indexOf(this) == t.size - 1
             }
         }
 

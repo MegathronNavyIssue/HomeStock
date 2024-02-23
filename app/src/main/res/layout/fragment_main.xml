@@ -53,10 +53,10 @@
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:overScrollMode="never"
-            tools:listitem="@layout/item_object_style_i"
+            tools:listitem="@layout/item_object_style_ii"
             app:layoutManager="com.drake.brv.layoutmanager.HoverLinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_setting" />

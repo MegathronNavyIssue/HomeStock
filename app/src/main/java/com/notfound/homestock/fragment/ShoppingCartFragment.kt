@@ -23,11 +23,11 @@ import com.notfound.homestock.viewmodel.RvViewModel
 import com.xuexiang.xui.widget.guidview.FocusShape
 import com.xuexiang.xui.widget.guidview.GuideCaseQueue
 import com.xuexiang.xui.widget.guidview.GuideCaseView
-import timber.log.Timber
 
 class ShoppingCartFragment :
     BaseFragment<FragmentShoppingCartBinding>(R.layout.fragment_shopping_cart) {
     private var rvViewModel: RvViewModel? = null
+    private var guideCaseQueue: GuideCaseQueue? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
         immersionBar {
@@ -39,10 +39,10 @@ class ShoppingCartFragment :
         binding.rv.linear().setup {
             addType<ItemShoppingCartModel>(R.layout.item_shopping_cart_object)
             R.id.checkbox.onClick {
-                if (_data is ItemShoppingCartModel) {
-                    val model = getModel<ItemShoppingCartModel>(adapterPosition)
-                    model.isChecked = !model.isChecked
-                    notifyItemChanged(adapterPosition)
+                val data = _data
+                if (data is ItemShoppingCartModel) {
+                    data.isChecked = !data.isChecked
+                    notifyItemChanged(layoutPosition)
                 }
             }
             itemDifferCallback = object : ItemDifferCallback {
@@ -74,9 +74,19 @@ class ShoppingCartFragment :
         }
         activity?.let { ctx ->
             binding.ivAdd.setOnClickListener {
-                val temp = binding.rv.bindingAdapter.models
-                Timber.e(temp?.toString())
-                XPopup.Builder(ctx).asCustom(ShoppingCartAddDialog(ctx)).show()
+                XPopup.Builder(ctx).asCustom(ShoppingCartAddDialog(ctx) { bean ->
+                    binding.rv.bindingAdapter.apply {
+                        models?.find { it is ItemShoppingCartModel && it.bean.id != ShoppingCartBean.DEFAULT_ID }?.let {
+                            val list = models?.toMutableList()?.apply {
+                                add(ItemShoppingCartModel.buildModel(bean))
+                            }
+                            setDifferModels(list)
+                        }?: kotlin.run {
+                            // 展示的是样例
+                            models = listOf(ItemShoppingCartModel.buildModel(bean))
+                        }
+                    }
+                }).show()
             }
         }
         binding.ivDone.setOnClickListener {
@@ -102,7 +112,7 @@ class ShoppingCartFragment :
                     it.shoppingCartData.observe(this) { t ->
                         binding.rv.bindingAdapter.setDifferModels(t.toMutableList().apply {
                             if (isEmpty()) {
-                                add(ShoppingCartBean(id = 0, name = "这是样例"))
+                                add(ShoppingCartBean.getDefaultShoppingCartBean())
                             }
                         }.map {
                             ItemShoppingCartModel.buildModel(it)
@@ -110,10 +120,10 @@ class ShoppingCartFragment :
 
                         if (!DataUtils.loadGuide(DataUtils.GUIDE_SHOPPING_CART)) {
                             activity?.let { act ->
-                                CommonUtils.showGuide(act, binding.rv) { p ->
+                                CommonUtils.showGuide(binding.rv) { p ->
                                     binding.rv.layoutManager?.let { layoutManager ->
                                         val view = layoutManager.findViewByPosition(p)
-                                        GuideCaseQueue().apply {
+                                        guideCaseQueue = GuideCaseQueue().apply {
                                             add(
                                                 GuideCaseView.Builder(act)
                                                     .title(CommonUtils.getString(R.string.text_guide_shopping_cart_add))
@@ -143,8 +153,10 @@ class ShoppingCartFragment :
                                             )
                                             setCompleteListener {
                                                 DataUtils.setGuide(DataUtils.GUIDE_SHOPPING_CART)
+                                                guideCaseQueue = null
                                             }
-                                        }.show()
+                                            show()
+                                        }
                                     }
                                 }
                             }
@@ -153,6 +165,11 @@ class ShoppingCartFragment :
                 }
 
         }
+    }
+
+    override fun onDetach() {
+        guideCaseQueue?.cancel(true)
+        super.onDetach()
     }
 
     override fun initData() {

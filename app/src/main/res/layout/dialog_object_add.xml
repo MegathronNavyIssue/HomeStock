@@ -11,15 +11,15 @@
         android:paddingTop="10dp">
 
         <TextView
-            android:textStyle="bold"
             android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/text_item_add_title"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_name"
@@ -41,9 +41,35 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:textSize="14sp"
-            app:layout_constraintWidth_percent="1"
+            app:layout_constraintEnd_toStartOf="@+id/tv_group"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+        <TextView
+            android:id="@+id/tv_group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_object_group"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="@+id/tv_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_group" />
+
+        <TextView
+            android:id="@+id/tv_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/shape_edit_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:text="@string/text_object_expiration_time_default"
+            android:textColor="#808080"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/et_name"
+            app:layout_constraintTop_toTopOf="@+id/et_name" />
 
         <TextView
             android:id="@+id/tv_num"
@@ -54,7 +80,6 @@
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_name" />
-
 
 
         <EditText
@@ -83,10 +108,10 @@
             app:layout_constraintStart_toStartOf="@+id/tv_time" />
 
         <TextView
-            android:layout_marginStart="20dp"
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:background="@drawable/shape_edit_bg"
             android:gravity="center"
             android:text="@string/text_object_expiration_time_default"

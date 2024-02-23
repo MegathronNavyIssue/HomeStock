@@ -14,14 +14,14 @@ import com.notfound.homestock.model.ItemSettingOptionsModel
 class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        immersionBar{
+        immersionBar {
             statusBarDarkFont(true)
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        immersionBar{
+        immersionBar {
             statusBarDarkFont(false)
         }
     }
@@ -32,7 +32,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_s
             R.id.cl_root.onClick {
                 when (val data = _data) {
                     is ItemSettingOptionsModel -> {
-                        data.onClick{
+                        data.onClick(this@SettingFragment) {
                             // 修改设置后刷新UI,可以用liveData,但是又好像没有必要
                             initData()
                         }

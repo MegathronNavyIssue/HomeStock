@@ -6,7 +6,7 @@
     <com.notfound.homestock.view.PointConstraintLayout
         android:id="@+id/cl_object_root"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="68dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp">
 
@@ -44,7 +44,7 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     tools:text="标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题"
                     app:layout_constraintEnd_toStartOf="@+id/tv_sign"
                     app:layout_constraintStart_toEndOf="@+id/v_status"
@@ -80,7 +80,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_num"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_num"
                     app:layout_constraintEnd_toStartOf="@+id/tv_num"
                     tools:ignore="HardcodedText" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_name"
                     tools:text="1000" />

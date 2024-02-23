@@ -19,7 +19,10 @@ import com.notfound.homestock.databinding.FragmentMainBinding
 import com.notfound.homestock.dialog.ObjectAddDialog
 import com.notfound.homestock.dialog.ObjectEditDialog
 import com.notfound.homestock.model.ItemExampleObjectModel
+import com.notfound.homestock.model.ItemGroupObjectModel
+import com.notfound.homestock.model.ItemMainGroupModel
 import com.notfound.homestock.model.ItemObjectModel
+import com.notfound.homestock.model.ShowModel
 import com.notfound.homestock.utils.CommonUtils
 import com.notfound.homestock.utils.CommonUtils.createNavOptions
 import com.notfound.homestock.utils.DataUtils
@@ -37,6 +40,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         binding.rv.linear().setup {
             addType<ItemObjectModel>(R.layout.item_object_style_ii)
             addType<ItemExampleObjectModel>(R.layout.item_object_style_ii)
+            addType<ItemMainGroupModel>(R.layout.item_main_group)
+            addType<ItemGroupObjectModel>(R.layout.item_object_style_iii)
 
             R.id.cl_object_root.onLongClick {
                 val textArray = arrayOf(
@@ -82,10 +87,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                                                         "",
                                                         String.format(
                                                             resources.getString(R.string.text_item_delete_confirm),
-                                                            data.name
+                                                            data.itemInfoBean.name
                                                         ), {
                                                             DataUtils.removeItemRefresh(
-                                                                data.id,
+                                                                data.itemInfoBean.id,
                                                                 activity as AppCompatActivity
                                                             )
                                                         }, {
@@ -100,7 +105,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                                                 DataUtils.addShoppingCartObject(
                                                     ShoppingCartBean(
                                                         id = System.currentTimeMillis(),
-                                                        name = data.name
+                                                        name = data.itemInfoBean.name
                                                     ),
                                                     activity as AppCompatActivity
                                                 )
@@ -127,6 +132,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
                     }
                 }
+            }
+            R.id.cl_group_root.onClick {
+                expandOrCollapse()
             }
         }
 
@@ -167,13 +175,24 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                             viewList.add(ItemExampleObjectModel(expirationTime = System.currentTimeMillis() - 3600 * 1000 * 24))
                             viewList.add(ItemExampleObjectModel(expirationTime = System.currentTimeMillis() + 3600 * 1000 * 24))
                             viewList.add(ItemExampleObjectModel(expirationTime = System.currentTimeMillis() + 86400000 * 60L))
+                            binding.rv.bindingAdapter.setDifferModels(viewList)
+                        } else {
+                            when(DataUtils.getShowModel()){
+                                ShowModel.DEFAULT.id -> {
+                                    binding.rv.bindingAdapter.setDifferModels(viewList)
+                                }
+                                ShowModel.GROUP.id -> {
+                                    binding.rv.bindingAdapter.setDifferModels(ItemMainGroupModel.buildModel())
+                                }
+                            }
+
                         }
-                        binding.rv.bindingAdapter.setDifferModels(viewList)
+
                         // 引导页
                         // 这样实现引导页开销也太TM大了，但是我又懒得放一个静态的item上去
                         if (!DataUtils.loadGuide(DataUtils.GUIDE_HOME)) {
                             activity?.let { act ->
-                                CommonUtils.showGuide(act, binding.rv) { p ->
+                                CommonUtils.showGuide(binding.rv) { p ->
                                     binding.rv.layoutManager?.let { layoutManager ->
                                         val view = layoutManager.findViewByPosition(p)
                                         GuideCaseQueue().apply {
@@ -215,7 +234,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     override fun initData() {
-        rvViewModel?.itemInfoData?.postValue(DataUtils.loadItemInfo())
+        rvViewModel?.itemInfoData?.postValue(DataUtils.getItemData())
     }
 
 }

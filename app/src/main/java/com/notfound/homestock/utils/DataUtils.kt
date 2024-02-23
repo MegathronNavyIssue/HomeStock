@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.notfound.homestock.R
+import com.notfound.homestock.bean.GroupBean
 import com.notfound.homestock.bean.ItemInfoBean
 import com.notfound.homestock.bean.ShoppingCartBean
+import com.notfound.homestock.model.ShowModel
 import com.notfound.homestock.viewmodel.RvViewModel
 
 object DataUtils {
@@ -16,14 +18,34 @@ object DataUtils {
     // 备货清单数据
     private const val SHOPPING_CART_DATA = "shopping_cart_data"
 
-    // 首页引导页面展示标志
+    // 分组数据
+    private const val GROUP_DATA = "group_data"
+
+    // 引导展示标志 - 首页
     const val GUIDE_HOME = "guide_home"
 
-    // 备货清单页面引导页面展示标志
+    // 引导展示标志 - 备货清单页面
     const val GUIDE_SHOPPING_CART = "guide_shopping_cart"
 
+    // 引导展示标志 - 管理分组页面
+    const val GUIDE_MANAGE_GROUP = "guide_manage_group"
+
     // 过期前多少天进入临期提醒阶段
-    private  const val NOTICE_TIME = "notice_time"
+    private const val NOTICE_TIME = "notice_time"
+
+    // 显示模式
+    private const val SHOW_MODEL = "show_model"
+
+    init {
+        setDefaultData()
+    }
+
+    private fun setDefaultData() {
+        // 设置默认分组
+        if (getGroupData().isEmpty()) {
+            setGroupData(mutableListOf(GroupBean.getEmptyGroupBean()))
+        }
+    }
 
     // 保存数据并且通知liveData刷新
     private fun saveItemInfoRefresh(
@@ -43,7 +65,7 @@ object DataUtils {
         ViewModelProvider(activity)[RvViewModel::class.java].shoppingCartData.postValue(list)
     }
 
-    fun loadItemInfo(): MutableList<ItemInfoBean> {
+    fun getItemData(): MutableList<ItemInfoBean> {
         SharedPreferencesUtils.getString(ITEM_INFO_DATA)?.let {
             return Gson().fromJson<MutableList<ItemInfoBean>?>(
                 it,
@@ -53,17 +75,22 @@ object DataUtils {
         return mutableListOf()
     }
 
+    // 保存数据
+    fun setItemData(list: List<ItemInfoBean>) {
+        SharedPreferencesUtils.save(ITEM_INFO_DATA, Gson().toJson(list))
+    }
+
     // 增加数据并且刷新UI
     fun addItemRefresh(item: ItemInfoBean, activity: AppCompatActivity) {
         saveItemInfoRefresh(
-            loadItemInfo().apply { this.add(item) },
+            getItemData().apply { this.add(item) },
             activity
         )
     }
 
     // 删除数据并且刷新UI
     fun removeItemRefresh(id: Long, activity: AppCompatActivity) {
-        val list = loadItemInfo()
+        val list = getItemData()
 
         list.find { it.id == id }?.let {
             list.remove(it)
@@ -73,7 +100,7 @@ object DataUtils {
 
     // 更新数据并且刷新UI
     fun updateItemRefresh(item: ItemInfoBean, activity: AppCompatActivity) {
-        val list = loadItemInfo()
+        val list = getItemData()
         val p = list.indexOfFirst { it.id == item.id }
         if (p != -1) {
             list[p] = item
@@ -146,6 +173,8 @@ object DataUtils {
     fun clear(activity: AppCompatActivity) {
         saveItemInfoRefresh(mutableListOf(), activity)
         saveShoppingCartInfoRefresh(mutableListOf(), activity)
+        setGroupData(mutableListOf())
+        setDefaultData()
     }
 
     // 获取过期前临期阶段天数
@@ -163,5 +192,34 @@ object DataUtils {
         }
     }
 
+    // 获取显示模式
+    fun getShowModel(): Int {
+        SharedPreferencesUtils.getInt(SHOW_MODEL)?.takeIf { it != -1 }?.let {
+            return it
+        }
+        return ShowModel.DEFAULT.id
+    }
+
+    // 设置过期前临期阶段天数
+    fun setShowModel(model: Int) {
+        SharedPreferencesUtils.save(SHOW_MODEL, model)
+    }
+
+    // 获取分组
+    fun getGroupData(): MutableList<GroupBean> {
+        SharedPreferencesUtils.getString(GROUP_DATA)?.let {
+            return Gson().fromJson<MutableList<GroupBean>?>(
+                it,
+                object : TypeToken<List<GroupBean>>() {}.type
+            ).toMutableList()
+        } ?: kotlin.run {
+            return mutableListOf()
+        }
+    }
+
+    // 保存分组
+    fun setGroupData(list: MutableList<GroupBean>) {
+        SharedPreferencesUtils.save(GROUP_DATA, Gson().toJson(list))
+    }
 
 }

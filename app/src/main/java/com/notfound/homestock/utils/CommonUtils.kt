@@ -1,6 +1,5 @@
 package com.notfound.homestock.utils
 
-import android.app.Activity
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.navigation.NavOptions
@@ -10,11 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.utils.models
 import com.notfound.homestock.R
 import com.notfound.homestock.base.AppContext
-import com.xuexiang.xui.widget.guidview.FocusShape
-import com.xuexiang.xui.widget.guidview.GuideCaseQueue
-import com.xuexiang.xui.widget.guidview.GuideCaseView
-import timber.log.Timber
-import java.lang.Exception
 
 /**
  *
@@ -45,7 +39,7 @@ object CommonUtils {
         }
     }
 
-    fun showGuide(activity: Activity, rv: RecyclerView, callback: (t:Int) -> Unit) {
+    fun showGuide(rv: RecyclerView, callback: (t:Int) -> Unit) {
         var guild = false
         val viewTreeObserver = ViewTreeObserver.OnDrawListener {
             rv.models?.let {

@@ -4,37 +4,108 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item"
+        android:id="@+id/cl_group_root"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#F0F0F0"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:paddingEnd="0dp"
-        android:paddingStart="16dp">
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/shape_dialog_add_bg_white"
+        android:foreground="?selectableItemBackgroundBorderless">
 
         <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:contentDescription="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_arrow"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="标题" />
+            app:layout_constraintStart_toEndOf="@+id/iv_arrow"
+            app:layout_constraintEnd_toStartOf="@+id/ll_num">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_num"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constrainedWidth="true"
+                tools:text="标题" />
+
+            <TextView
+                android:layout_marginStart="2dp"
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_title"
+                app:layout_constraintStart_toEndOf="@+id/tv_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="[100]" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/ll_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_num_expired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/status_already"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/tv_num_soon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@color/status_soon"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
+
+
+        </LinearLayout>
 
         <View
+            android:id="@+id/v_dividing"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#DDE6ED"

@@ -23,11 +23,21 @@
         android:id="@+id/settingFragment"
         android:name="com.notfound.homestock.fragment.SettingFragment"
         android:label="设置"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_ManageGroupsFragment"
+            app:destination="@id/ManageGroupsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/ShoppingCartFragment"
         android:name="com.notfound.homestock.fragment.ShoppingCartFragment"
-        android:label="购物车"
+        android:label="备货清单"
         tools:layout="@layout/fragment_shopping_cart" />
+
+    <fragment
+        android:id="@+id/ManageGroupsFragment"
+        android:name="com.notfound.homestock.fragment.ManageGroupsFragment"
+        android:label="管理分组"
+        tools:layout="@layout/fragment_manage_groups" />
 </navigation>

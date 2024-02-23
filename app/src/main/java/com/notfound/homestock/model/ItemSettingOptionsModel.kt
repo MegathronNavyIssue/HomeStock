@@ -3,6 +3,7 @@ package com.notfound.homestock.model
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -10,6 +11,8 @@ import androidx.core.text.isDigitsOnly
 import androidx.core.view.isInvisible
 import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.BindingAdapter
 import com.drake.brv.item.ItemBind
@@ -47,26 +50,37 @@ class ItemSettingOptionsModel(
         // 修改临期时间
         private const val ACTION_CHANGE_NOTICE_TIME: String = "action_change_notice_time"
 
+        // 修改首页列表样式
+        private const val ACTION_CHANGE_SHOW_MODEL: String = "action_change_show_model"
+
+        // 管理分组
+        private const val ACTION_MANAGE_GROUPS: String = "action_manage_groups"
+
         // 分组间隔
         private const val GROUP_DIVIDING: Int = 50
-        private val hrefList = mutableListOf<HrefBean>()
-
-        private class HrefBean(
-            val title: String,
-            val url: String,
-        )
-
-        init {
-            // 免费资源来源要求标注出处
-            hrefList.clear()
-            hrefList.add(HrefBean("icons by [Bing AI]", "https://www.bing.com/"))
-            hrefList.add(HrefBean("icons by [Google Fonts]", "https://fonts.google.com/"))
-            hrefList.add(HrefBean("images by [Pixabay]", "https://pixabay.com/"))
-            hrefList.add(HrefBean("stickers by [Flaticon]", "https://www.flaticon.com/"))
-        }
 
         fun getSettings(activity: Activity): List<ItemSettingOptionsModel> {
             return mutableListOf<ItemSettingOptionsModel>().apply {
+                add(
+                    ItemSettingOptionsModel(
+                        title = CommonUtils.getString(R.string.text_settings_show_model),
+                        content = if (DataUtils.getShowModel() == ShowModel.GROUP.id) CommonUtils.getString(
+                            R.string.text_settings_show_model_group
+                        ) else CommonUtils.getString(R.string.text_settings_show_model_default),
+                        action = ACTION_CHANGE_SHOW_MODEL,
+                        activity = activity,
+                        group = 0,
+                    )
+                )
+                add(
+                    ItemSettingOptionsModel(
+                        title = CommonUtils.getString(R.string.text_settings_manage_groups),
+                        content = "",
+                        action = ACTION_MANAGE_GROUPS,
+                        activity = activity,
+                        group = 0,
+                    )
+                )
                 add(
                     ItemSettingOptionsModel(
                         title = CommonUtils.getString(R.string.text_settings_notice_time),
@@ -120,6 +134,22 @@ class ItemSettingOptionsModel(
         }
     }
 
+    private class HrefBean(
+        val title: String,
+        val url: String,
+    )
+
+    private val hrefList = mutableListOf<HrefBean>()
+
+    init {
+        // 免费资源来源要求标注出处
+        hrefList.clear()
+        hrefList.add(HrefBean("icons by [Bing AI]", "https://www.bing.com/"))
+        hrefList.add(HrefBean("icons by [Google Fonts]", "https://fonts.google.com/"))
+        hrefList.add(HrefBean("images by [Pixabay]", "https://pixabay.com/"))
+        hrefList.add(HrefBean("stickers by [Flaticon]", "https://www.flaticon.com/"))
+    }
+
     override fun onBind(vh: BindingAdapter.BindingViewHolder) {
         val data = vh.adapter.models
         val temp = mutableListOf<ItemSettingOptionsModel>()
@@ -130,6 +160,10 @@ class ItemSettingOptionsModel(
         }
         DataBindingUtil.bind<ItemSettingOptionsBinding>(vh.itemView)?.let {
             if (temp.isNotEmpty()) {
+                it.clRoot.updateLayoutParams<RecyclerView.LayoutParams> {
+                    topMargin = 0
+                }
+                it.vDividing.isInvisible = false
                 if (temp.size == 1) {
                     it.vDividing.isInvisible = true
                     it.clRoot.background = ResourcesCompat.getDrawable(
@@ -155,7 +189,6 @@ class ItemSettingOptionsModel(
                                 R.drawable.shape_item_setting_options_bg_top,
                                 AppContext.application.theme
                             )
-                            it.vDividing.isInvisible = false
                         }
 
                         temp.size - 1 -> {
@@ -168,9 +201,14 @@ class ItemSettingOptionsModel(
                         }
 
                         else -> {
-                            it.vDividing.isInvisible = false
+                            it.clRoot.setBackgroundColor(
+                                ResourcesCompat.getColor(
+                                    AppContext.application.resources,
+                                    R.color.white,
+                                    AppContext.application.theme
+                                )
+                            )
                         }
-
                     }
                 }
             }
@@ -179,11 +217,18 @@ class ItemSettingOptionsModel(
         }
     }
 
-    fun onClick(callback: () -> Unit) {
+    fun onClick(fragment: Fragment, callback: () -> Unit) {
         when (action) {
             ACTION_CLEAR -> {
-                DataUtils.clear(activity as AppCompatActivity)
-                CommonUtils.toast(R.string.text_settings_clear_success)
+                XPopup.Builder(this.activity)
+                    .asConfirm(CommonUtils.getString(R.string.text_settings_clear_confirm_tile),
+                        CommonUtils.getString(R.string.text_settings_clear_confirm_subtitle),
+                        {
+                            DataUtils.clear(activity as AppCompatActivity)
+                            CommonUtils.toast(R.string.text_settings_clear_success)
+                        }, {
+
+                        }).show()
             }
 
             ACTION_GITHUB -> {
@@ -230,7 +275,7 @@ class ItemSettingOptionsModel(
                         }
                     })
                     .asInputConfirm(
-                        "",
+                        CommonUtils.getString(R.string.text_settings_notice_time),
                         CommonUtils.getString(R.string.text_settings_notice_time_subtitle),
                         null,
                         CommonUtils.getString(R.string.text_settings_notice_time_hint)
@@ -250,6 +295,31 @@ class ItemSettingOptionsModel(
                     }
                     .show()
 
+            }
+
+            ACTION_CHANGE_SHOW_MODEL -> {
+                // 注意对应id的顺序
+                val array = arrayOf(ShowModel.DEFAULT.text, ShowModel.GROUP.text)
+                XPopup.Builder(this.activity)
+                    .isDestroyOnDismiss(true)
+                    .asCenterList(
+                        CommonUtils.getString(R.string.text_settings_show_model_subtitle),
+                        array,
+                        null, DataUtils.getShowModel()
+                    ) { position, _ ->
+                        DataUtils.setShowModel(position)
+                        CommonUtils.toast(R.string.text_settings_success)
+                        callback.invoke()
+                    }
+                    .show()
+            }
+
+            ACTION_MANAGE_GROUPS -> {
+                fragment.findNavController().navigate(
+                    R.id.action_settingFragment_to_ManageGroupsFragment,
+                    Bundle(),
+                    CommonUtils.createNavOptions()
+                )
             }
 
             ACTION_EMPTY -> {
